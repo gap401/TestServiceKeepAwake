@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestServiceKeepAwake": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\glenn\\source\\repos\\TestServiceKeepAwake\\bin\\Debug"
+    }
+  }
+}
