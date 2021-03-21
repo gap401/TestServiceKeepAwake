@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Topshelf.Logging;
 
 namespace TestServiceKeepAwake
@@ -25,9 +26,35 @@ namespace TestServiceKeepAwake
 
         }
 
+
+        public bool Pause()
+        {
+            _watcher.EnableRaisingEvents = false;
+            return true;
+        }
+
+
+        public bool Continue()
+        {
+            _watcher.EnableRaisingEvents = true;
+            return true;
+        }
+
+
+        public void CustomCommand(int commandNumber)
+        {
+            _log.InfoFormat("Hey, I got the command number '{0}'", commandNumber);
+        }
+
+
         private void FileCreated(object sender, FileSystemEventArgs e)
         {
             _log.InfoFormat("Starting conversion of '{0}'", e.FullPath);
+
+            if (e.FullPath.Contains("bad_in"))
+            {
+                throw new NotSupportedException("Cannot convert");
+            }
 
             string content = File.ReadAllText(e.FullPath);
 

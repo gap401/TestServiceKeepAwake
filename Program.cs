@@ -26,7 +26,26 @@ namespace TestServiceKeepAwake
                                             serviceInstance.WhenStopped(
                                                 execute => execute.Stop());
 
+                                            serviceInstance.WhenPaused(
+                                                execute => execute.Pause());
+
+                                            serviceInstance.WhenContinued(
+                                                execute => execute.Continue());
+
+                                            serviceInstance.WhenCustomCommandReceived(
+                                                (execute, hostControl, commandNumber) =>
+                                                 execute.CustomCommand(commandNumber));
+
                                         });
+
+                                serviceConfig.EnableServiceRecovery(recoveryOption =>
+                                        {
+                                            recoveryOption.RestartService(1);
+                                            recoveryOption.RestartComputer(60, "Service Demo");
+                                            recoveryOption.RunProgram(5, @"c:\temp\someprogram.exe");
+                                        });
+
+                                serviceConfig.EnablePauseAndContinue();
 
                                 serviceConfig.SetServiceName("AwesomeFileConverter");
                                 serviceConfig.SetDisplayName("Awesome File Converter");
